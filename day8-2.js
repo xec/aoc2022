@@ -5,8 +5,7 @@ let input = `30373
 35390`
 
 let grid = input.split('\n').map(x => x.split('').map(x => ({
-  height: x,
-  score: 0
+  height: x
 })))
 
 grid.forEach((row, y) => row.forEach((tree, x) => calcScenicScore(x, y, tree)))
