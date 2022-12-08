@@ -70,7 +70,7 @@ for (; x < grid[0].length; x++) {
     // row
     let tree = grid[y][x]
     if (tree.height > height) {
-      tree.top = true
+      tree.bottom = true
       height = tree.height
     }
   }
