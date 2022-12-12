@@ -1,5 +1,3 @@
-// todo: find another way to keep your worry levels manageable??? bigint sure didnt do the trick hehe
-
 let input = `Monkey 0:
   Starting items: 79, 98
   Operation: new = old * 19
@@ -47,6 +45,13 @@ let monkeys = input.split("\n\n").map((mstr, id) => {
   };
 });
 
+let superModulo = BigInt(
+  monkeys.reduce((sm, curr) => {
+    if (!sm) return curr.divisibleBy;
+    return sm * curr.divisibleBy;
+  }, 0n)
+);
+
 function inspectAndThrowItem(worryLevel, monkey) {
   // console.log("inspect", worryLevel);
 
@@ -80,7 +85,8 @@ function inspectAndThrowItem(worryLevel, monkey) {
   let receivingMonkey =
     monkeys[isDivisible ? monkey.yesMonkeyId : monkey.noMonkeyId];
   // console.log("throwing", worryLevel, "to", receivingMonkey.id)
-  receivingMonkey.items.push(worryLevel);
+  // reduce by modulo
+  receivingMonkey.items.push(worryLevel % superModulo);
 }
 
 function monkeyRound(monkey) {
@@ -92,10 +98,7 @@ function monkeyRound(monkey) {
 
 console.log(monkeys);
 
-// monkeyRound(monkeys[0]);
-
-let roundsToPlay = 1000;
-// roundsToPlay = 1;
+let roundsToPlay = 10000;
 
 function playRound() {
   monkeys.forEach(monkeyRound);
@@ -103,11 +106,14 @@ function playRound() {
 
 while (roundsToPlay--) {
   playRound();
-  console.log("rounds left", roundsToPlay);
+  // console.log("rounds left", roundsToPlay);
 }
 
 console.log(
   monkeys.sort((a, b) => a.inspectionsPerformed - b.inspectionsPerformed)
 );
 
-console.log("monkey business", monkeys.map(x => x.inspectionsPerformed));
+console.log(
+  "monkey business",
+  monkeys.map((x) => x.inspectionsPerformed)
+);
